@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes">
+    <meta name="theme-color" content="#febbbb">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link href="https://fonts.googleapis.com/css?family=Kalam|Noto+Serif" rel="stylesheet">
+    <title>GDI Income Calculator</title>
+    <style>
+        .pull-left {
+            float: left
+        }
+        
+        .pull-right {
+            float: right
+        }
+        
+        .clearfix:before,
+        .clearfix:after {
+            content: " ";
+            display: table
+        }
+        
+        .clearfix:after {
+            clear: both
+        }
+        
+        * {
+            box-sizing: border-box
+        }
+        
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 24px;
+            font-family: 'Noto Serif', serif;
+            width: 100%;
+            height: 100%
+        }
+        
+        body {
+            background: #222
+        }
+        
+        header {
+            padding-bottom: 20px;
+            font-family: sans-serif
+        }
+        
+        h1 {
+            font-size: 1.5em;
+            margin: 0
+        }
+        
+        #main {
+            display: block;
+            margin: 0 auto;
+            width: 80%;
+            max-width: 1200px;
+            background: linear-gradient(to bottom right, #ffffff, #cdead6);
+            border: 1px solid black;
+            border-radius: 20px;
+            padding: 30px
+        }
+        
+        #total {
+            background: linear-gradient(to bottom, #86cc3d, green);
+            color: white;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            padding: 0.25em 2em;
+            font-size: 1.875em;
+            padding-right: 2em;
+            font-family: 'Kalam', cursive;
+            box-shadow: 0px 2px 14px 0px #333;
+            text-shadow: 0px 2px 2px black
+        }
+        
+        #total-income {
+            font-weight: 700
+        }
+        
+        #layers table {
+            width: 100%;
+            background: linear-gradient(to bottom, #fdffed, #f8ffd2);
+            border-collapse: collapse;
+            border-style: hidden;
+            border-spacing: 0;
+            padding-top: 0.25em;
+            margin-bottom: 1em;
+            font-family: 'Kalam', cursive;
+            box-shadow: 0px 2px 14px 0px #333
+        }
+        
+        #error-message {
+            visibility: hidden;
+            display: block;
+            text-align: center;
+            color: #f44336
+        }
+        
+        #layers td,
+        #layers th {
+            color: #47475a;
+            border-bottom: 1px dashed rgb(88, 231, 241);
+            border-left: 1px solid pink;
+            border-right: 1px solid pink;
+            text-align: center
+        }
+        
+        #referrals {
+            float: left;
+            width: 80%
+        }
+        
+        #referrals label {
+            display: block;
+            margin-bottom: 1em
+        }
+        
+        #referrals input {
+            position: relative;
+            top: 0.125em;
+            width: 2em;
+            font-size: 2em;
+            text-align: center;
+            box-shadow: 0px 2px 14px 0px #333;
+            border: none;
+            border-radius: 4px
+        }
+        
+        #calculate {
+            float: left;
+            width: 20%;
+            font-size: 4em;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(to bottom, #86cc3d, #069006);
+            border: 1px solid #069006;
+            box-shadow: 0px 2px 14px 0px #333;
+            cursor: pointer;
+            border-radius: 4px
+        }
+        
+        #calculate:hover {
+            background: linear-gradient(to bottom, #a1ea54, #0cb30c)
+        }
+        
+        #calculate:active {
+            color: #eee;
+            background: linear-gradient(to bottom, #27b51a, #069006);
+            box-shadow: inset 0px 0px 10px 0px #666, 0px 2px 14px 0px #333
+        }
+        
+        footer {
+            font-size: 0.675em;
+            color: #333
+        }
+        
+        @media screen and (max-width: 800px) {
+            body {
+                font-size: 12px
+            }
+            header img {
+                max-height: 40px
+            }
+            #calculate {
+                margin-top: 0
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <header>
+            <h1 class="text-center">Income Calculator</h1> <span class="clearfix"></span> </header>
+        <div id="error" style="display: none;">
+            <p>Error text</p>
+        </div>
+        <div id="total"> <span class="pull-left">Your Monthly Income:</span> <span class="pull-right" id="total-income"></span> <span class="clearfix"></span></div>
+        <div id="layers">
+            <table>
+                <thead>
+                    <th>Layer</th>
+                    <th>Basic Referrals</th>
+                    <th>Layer Total</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="clearfix"> <span id="error-message"> Please check your inputs and try again! </span>
+            <form id="referrals">
+                <label>
+                    <input type="number" id="direct" placeholder="#" min="15" max="10000" /> Number of direct referrals ($1 each) </label>
+                <label>
+                    <input type="number" id="indirect" placeholder="#" min="5" max="10" /> Number of level 2-5 referrals ($1 each) </label>
+                <input type="submit" style="display: none;" />
+            </form>
+            <button id="calculate">=</button>
+        </div>
+        <footer>
+            <p><strong>Important legal notice:</strong> This income calculator is intended for illustrative and educational purposes only, and in no way guarantees any specific network growth pattern or income earnings.</p>
+        </footer>
+    </div>
+</body>
+<script>
+    'use strict';
+    (function() {
+        var moneyFormat = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+        });
+        var numberFormat = new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+        });
+        var errorHandler = {
+            show: function() {
+                var inputs = this._getInputs(),
+                    errorText = this._getErrorText();
+                errorText.style.visibility = 'visible';
+                for (var i = 0; i < inputs.length; i++) {
+                    inputs[i].style.outline = '3px solid red';
+                }
+            },
+            hide: function() {
+                var inputs = this._getInputs(),
+                    errorText = this._getErrorText();
+                errorText.style.visibility = 'hidden';
+                for (var i = 0; i < inputs.length; i++) {
+                    inputs[i].style.outline = 'none';
+                }
+            },
+            _getInputs: function() {
+                return document.getElementsByTagName('input');
+            },
+            _getErrorText: function() {
+                return document.getElementById('error-message');
+            }
+        };
+        var state = false;
+        var calc = function(e) {
+            e.preventDefault();
+            if (state) {
+                return;
+            }
+            errorHandler.hide();
+            state = true;
+            var directAmount = 1;
+            var indirectAmount = 1;
+            var maxLevels = 5;
+            var direct = parseInt(document.getElementById('direct').value) || 0;
+            var indirect = parseInt(document.getElementById('indirect').value*5) || 0;
+            var totalIncome = document.getElementById('total-income');
+            if (!direct || !indirect) {
+                errorHandler.show();
+                state = false;
+                return;
+            }
+            var table = document.getElementsByTagName('tbody');
+            table = table[0];
+            totalIncome.innerText = '';
+            for (var i = 0; i < maxLevels; i++) {
+                table.rows[i].cells[1].innerText = '';
+                table.rows[i].cells[2].innerText = '';
+            }
+            var i = 0;
+            var delay = 150;
+            var total = 0;
+            var main = function loop(maxLevels) {
+                var count = direct*15 * Math.pow(indirect, i);
+              
+                var amount = count;//(direct* Math.pow(indirect, i) * indirectAmount*5);
+                total += amount;
+                setTimeout(function() {
+                    table.rows[i].cells[1].innerText = numberFormat.format(count);
+                }, delay);
+               
+                setTimeout(function() {
+                    table.rows[i].cells[2].innerText = moneyFormat.format(amount);
+                }, delay * 2);
+                setTimeout(function() {
+                    if (++i < maxLevels) {
+                        loop(maxLevels);
+                    } else {
+                        setTimeout(function() {
+                            totalIncome.innerText = moneyFormat.format(total);
+                        }, delay * 3);
+                        state = false;
+                    }
+                }, delay * 3);
+            }(maxLevels);
+        };
+        document.getElementById('calculate').addEventListener('click', calc);
+        document.getElementById('referrals').onsubmit = calc;
+    })();
+</script>
+
+</html>
